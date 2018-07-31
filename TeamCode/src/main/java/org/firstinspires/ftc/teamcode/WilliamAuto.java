@@ -1,21 +1,23 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "WilliamT")
+@Autonomous(name = "WilliamAuto")
 
 
-public class WilliamTele extends LinearOpMode
+public class WilliamAuto extends LinearOpMode
 {
     //declare drive motors
     private DcMotor DML;
     private DcMotor DMR;
     //declare drive motor
     private Servo CS;
+    private Servo BS;
     //Servo constants
     private static final double grab = 1;
     private static final double release = 0;
@@ -24,12 +26,14 @@ public class WilliamTele extends LinearOpMode
 
 
     @Override
+    @Disabled
     public void runOpMode() throws InterruptedException
     {
         //Init Drive
 
         DML = hardwareMap.dcMotor.get("LeftMotor");
         DMR = hardwareMap.dcMotor.get("RightMotor");
+
 
         //Init Claw
 
@@ -52,26 +56,13 @@ public class WilliamTele extends LinearOpMode
 
         while (opModeIsActive())
         {
-            //TankDrive
 
-            DML.setPower(-gamepad1.left_stick_y);
-            DMR.setPower(-gamepad1.right_stick_y);
-
-            if(gamepad1.y)
-            {
-               CS.setPosition(grab);
-            }
-            if(!gamepad1.y)
-            {
-                CS.setPosition(release);
-            }
-            if(gamepad1.a & gamepad1.left_bumper & gamepad1.right_bumper)
-            {
-                bob = true;
-            }
-            // give hardware a chance to catch up;
-
-            idle();
+            goFWD(SPEED, 4000);
+            Ltrn(SPEED,250);
+            goFWD(SPEED,4000);
+            Rtrn(SPEED,250);
+            goFWD(SPEED,4000);
+            hault();
 
         }
 
@@ -80,7 +71,36 @@ public class WilliamTele extends LinearOpMode
 
 
 
+
     }
 
+    double SPEED = 1;
+
+
+    public void goFWD (double power, long time) throws InterruptedException
+    {
+        DML.setPower(power);
+        DMR.setPower(power);
+        Thread.sleep(time);
+    }
+    public void Ltrn (double power, long time) throws InterruptedException
+    {
+        DML.setPower(-power);
+        DMR.setPower(power);
+        Thread.sleep(time);
+
+    }
+    public void Rtrn (double power, long time) throws InterruptedException
+    {
+        DML.setPower(power);
+        DMR.setPower(-power);
+        Thread.sleep(time);
+
+    }
+    public void hault () throws InterruptedException
+    {
+        goFWD( 0,1);
+
+    }
 
 }

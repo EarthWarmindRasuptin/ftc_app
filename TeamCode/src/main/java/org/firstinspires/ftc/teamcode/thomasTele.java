@@ -12,7 +12,7 @@ public class thomasTele extends LinearOpMode
     private DcMotor rmotor;
 
 @Override
-    public void runOpMode {} throws InterruptedException
+    public void runOpMode () throws InterruptedException
     {
         //Init Drive
         lmotor = hardwareMap.dcMotor.get("LeftMotor");
